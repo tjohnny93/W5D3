@@ -21,8 +21,14 @@ class ControllerBase
 
   # Set the response status code and header
   def redirect_to(url)
-    @res.status = 302
-    @res.location = url
+    if already_built_response?
+      raise "already rendered"
+    else
+      @res.status = 302
+      @res.location = url
+      @already_built_response = true
+    end
+
   end
 
   # Populate the response with content.
